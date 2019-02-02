@@ -4,8 +4,6 @@ pipeline {
         stage('Build'){
             steps {
                 sh 'mvn clean package'
-                // sh 'mvn clean'
-                // echo 'dale!'
             }
             post {
                 success {
@@ -16,7 +14,16 @@ pipeline {
         }
         stage ('Deploy to staging'){
             steps{
+                timeout(time:5, unit:'DAYS') {
+                    input message: 'Approve it baby...'
+                }
+
                 build job: 'sft-deploy-stage'
+            }
+        }
+        stage ('Deploy to prod'){
+            steps{
+                echo 'PROD ;-)'
             }
         }
     }
